@@ -2,7 +2,7 @@ package ru.skillbranch.devintensive.utils
 
 object Utils {
     fun parseFullName(fullName:String?):Pair<String?,String?> {
-        if (fullName==null || fullName.isNullOrBlank()) return "null" to "null"
+        if (fullName==null || fullName.isNullOrBlank()) return null to null
         val parts : List<String>? = fullName.removePrefix(" ").split(" ")
         if (parts != null) {
             return when (parts.size) {
@@ -13,13 +13,13 @@ object Utils {
                 }
                 1 -> {
                     val firstName = parts[0]
-                    firstName to "null"
+                    firstName to null
                 }
                 else ->
-                    return "null" to "null"
+                    return null to null
             }
         }
-        else return "null" to "null"
+        else return null to null
     }
 
     fun transliteration(payload: String, divider: String=" "): String {
@@ -105,7 +105,7 @@ object Utils {
         else if (firstName != null && !firstName.isNullOrBlank()) {
             firstName[0].toUpperCase().toString()
         } else {
-            "null"
+            null
         }
     }
 }
