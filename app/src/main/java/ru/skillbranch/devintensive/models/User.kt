@@ -47,7 +47,7 @@ data class User (
             return this
         }
         fun avatar(avatar: String):Builder {
-            this.avatar=id
+            this.avatar=avatar
             return this
         }
         fun rating(rating: Int):Builder {
