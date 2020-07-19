@@ -10,3 +10,7 @@ fun String.truncate(int:Int=16):String {
     return if (!isChanged) "$candidate..."
     else candidate
 }
+
+fun String.stripHtml():String {
+    return Regex("( ){1,}").replace(Regex("<[^>]*>").replace(this,"")," ")
+}
