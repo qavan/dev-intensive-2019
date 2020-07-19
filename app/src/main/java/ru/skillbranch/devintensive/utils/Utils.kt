@@ -100,12 +100,10 @@ object Utils {
     }
 
     fun toInitials(firstName: String?, lastName: String?): String? {
-        return if (firstName != null && lastName != null && !firstName.isNullOrBlank() && !lastName.isNullOrBlank())
-            firstName[0].toUpperCase().toString() + lastName[0].toUpperCase().toString()
-        else if (firstName != null && !firstName.isNullOrBlank()) {
-            firstName[0].toUpperCase().toString()
-        } else {
-            null
-        }
+        val name = firstName.orEmpty().trim().getOrNull(0)?.toUpperCase()
+        val surname = lastName.orEmpty().trim().getOrNull(0)?.toUpperCase()
+        val firstInit = name?.toString() ?: ""
+        val secondInit = surname?.toString() ?: ""
+        return "$firstInit$secondInit".ifEmpty { null }
     }
 }
