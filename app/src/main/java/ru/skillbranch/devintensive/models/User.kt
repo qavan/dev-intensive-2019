@@ -13,7 +13,6 @@ data class User (
     var lastVisit : Date? = Date(),
     var isOnline : Boolean = false
 ) {
-    constructor() : this("")
     constructor(id:String,firstName: String?,lastName: String?) : this(id=id,firstName = firstName,lastName = lastName,avatar = null)
     constructor(id:String?) : this (id.toString(), "John", "Doe $id")
 
@@ -22,7 +21,7 @@ data class User (
                 "${if(lastName==="Doe") "His name id $firstName $lastName" else "And his name is $firstName $lastName!!!"}\n")
     }
 
-    class Builder() {
+    class Builder {
         lateinit var id : String
         var firstName : String? = null
         var lastName : String? = null
@@ -40,11 +39,11 @@ data class User (
             return this
         }
         fun firstName(firstName: String):Builder {
-            this.firstName=id
+            this.firstName=firstName
             return this
         }
         fun lastName(lastName: String):Builder {
-            this.lastName=id
+            this.lastName=lastName
             return this
         }
         fun avatar(avatar: String):Builder {
