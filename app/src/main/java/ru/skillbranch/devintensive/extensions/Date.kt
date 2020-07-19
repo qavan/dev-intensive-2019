@@ -1,6 +1,7 @@
 package ru.skillbranch.devintensive.extensions
 
 import java.lang.IllegalStateException
+import java.lang.Math.abs
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -28,7 +29,22 @@ fun Date.add(value:Int, units: TimeUnits = TimeUnits.SECOND): Date{
 }
 
 fun Date.humanizeDiff(date: Date= Date()): String {
-    return ""
+    val diff = date.time - this.time
+    val back = if (diff<0) "" else " назад"
+    val forward = if (diff<0) "через " else ""
+
+    return when (abs(diff)) {
+        in 0..SECOND -> "только что"
+        in SECOND .. 45 * SECOND -> "${forward}несколько секунд$back"
+        in 45 * SECOND .. 75 * SECOND -> "${forward}минуту$back"
+        in 75 * SECOND .. 45 * MINUTE -> "$forward${TimeUnits.MINUTE.plural((abs(diff).div(MINUTE)).toInt())}$back"
+        in 45 * MINUTE .. 75 * MINUTE -> "${forward}час$back"
+        in 75 * MINUTE .. 22 * HOUR -> "$forward${TimeUnits.HOUR.plural((abs(diff).div(HOUR)).toInt())}$back"
+        in 22 * HOUR .. 26 * HOUR -> "${forward}день назад"
+        in 26 * HOUR .. 360 * DAY-> "$forward${TimeUnits.DAY.plural((abs(diff)/(DAY)).toInt())}$back"
+        in 360 * DAY .. Long.MAX_VALUE-> if (forward.isBlank()) "более года назад" else "более чем через год"
+        else -> ""
+    }
 }
 
 
