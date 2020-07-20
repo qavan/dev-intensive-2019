@@ -15,6 +15,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView.OnEditorActionListener
 import android.R.attr.password
 import android.view.KeyEvent
+import ru.skillbranch.devintensive.extensions.hideKeyboard
 
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
@@ -50,6 +51,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent?): Boolean {
                 return if (actionId == EditorInfo.IME_ACTION_DONE) {
                     logic()
+                    hideKeyboard()
                     true
                 } else false
             }
