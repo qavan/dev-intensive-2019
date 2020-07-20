@@ -41,35 +41,35 @@ class Bender(var status:Status=Status.NORMAL,var question: Question=Question.NAM
     enum class Question(val question:String,val answer: List<String>){
         NAME("Как меня зовут?", listOf("бендер","bender")) {
             override fun validate(answer: String): String {
-                return if (!answer[0].isUpperCase()) "Имя должно начинаться с заглавной буквы\n" else ""
+                return if (answer == "" || !answer[0].isUpperCase()) "Имя должно начинаться с заглавной буквы\n" else ""
             }
 
             override fun nextQuestion(): Question = PROFESSION
         },
         PROFESSION("Назови мою профессию?", listOf("сгибальщик","bender")) {
             override fun validate(answer: String): String {
-                return if (!answer[0].isLowerCase()) "Профессия должна начинаться со строчной буквы\n" else ""
+                return if (answer == "" || !answer[0].isLowerCase()) "Профессия должна начинаться со строчной буквы\n" else ""
             }
 
             override fun nextQuestion(): Question = MATERIAL
         },
         MATERIAL("Из чего я сделан?", listOf("металл","дерево","metal","iron","wood")) {
             override fun validate(answer: String): String {
-                return if (Regex("[0-9]").containsMatchIn(answer)) "Материал не должен содержать цифр\n" else ""
+                return if (answer == "" || Regex("[0-9]").containsMatchIn(answer)) "Материал не должен содержать цифр\n" else ""
             }
 
             override fun nextQuestion(): Question = BDAY
         },
         BDAY("Когда меня создали?", listOf("2993")) {
             override fun validate(answer: String): String {
-                return if (Regex("[0-9]+").matchEntire(answer)?.value!=answer) "Год моего рождения должен содержать только цифры\n" else ""
+                return if (answer == "" || Regex("[0-9]+").matchEntire(answer)?.value!=answer) "Год моего рождения должен содержать только цифры\n" else ""
             }
 
             override fun nextQuestion(): Question = SERIAL
         },
         SERIAL("Мой серийный номер?", listOf("2716057")) {
             override fun validate(answer: String): String {
-                return if (Regex("[0-9]+").matchEntire(answer)?.value?.length != 7) "Серийный номер содержит только цифры, и их 7\n" else ""
+                return if (answer == "" || Regex("[0-9]+").matchEntire(answer)?.value?.length != 7) "Серийный номер содержит только цифры, и их 7\n" else ""
             }
 
             override fun nextQuestion(): Question = IDLE
