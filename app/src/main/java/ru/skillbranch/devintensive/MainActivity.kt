@@ -11,6 +11,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.skillbranch.devintensive.models.Bender
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView.OnEditorActionListener
+import android.R.attr.password
+import android.view.KeyEvent
+
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -40,6 +45,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         textTxt.text = benderObj.askQuestion()
         sendBtn.setOnClickListener(this)
+
+        messageEt.setOnEditorActionListener(object : OnEditorActionListener {
+            override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent?): Boolean {
+                return if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    logic()
+                    true
+                } else false
+            }
+        })
 
     }
 
@@ -82,19 +96,23 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         if (v?.id == R.id.iv_send) {
-            if (benderObj.question.validate(messageEt.text.toString()) == "" && benderObj.question !=Bender.Question.IDLE) {
-                val (phrase,color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
-                val (r,g,b) = color
-                benderImage.setColorFilter(Color.rgb(r,g,b),PorterDuff.Mode.MULTIPLY)
-                textTxt.text = phrase
-            }
-            else if (benderObj.question != Bender.Question.IDLE) {
-                textTxt.text = "${benderObj.question.validate(messageEt.text.toString())}${benderObj.question.question}"
-            }
-            else {
-                textTxt.text = "${benderObj.question.question}"
-            }
-            messageEt.setText("")
+            logic()
         }
+    }
+
+    fun logic() {
+        if (benderObj.question.validate(messageEt.text.toString()) == "" && benderObj.question !=Bender.Question.IDLE) {
+            val (phrase,color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
+            val (r,g,b) = color
+            benderImage.setColorFilter(Color.rgb(r,g,b),PorterDuff.Mode.MULTIPLY)
+            textTxt.text = phrase
+        }
+        else if (benderObj.question != Bender.Question.IDLE) {
+            textTxt.text = "${benderObj.question.validate(messageEt.text.toString())}${benderObj.question.question}"
+        }
+        else {
+            textTxt.text = "${benderObj.question.question}"
+        }
+        messageEt.setText("")
     }
 }

@@ -46,6 +46,7 @@
                 android:textColorHint="@color/color_gray_light"
                 android:hint="Введите текст"
                 android:imeOptions="actionDone"
+                android:inputType="text"
                 android:paddingTop="@dimen/spacing_normal_16"
                 android:paddingBottom="@dimen/spacing_normal_16"
                 android:layout_marginLeft="@dimen/spacing_normal_16"
