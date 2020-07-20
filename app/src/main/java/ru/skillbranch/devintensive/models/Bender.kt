@@ -12,14 +12,14 @@ class Bender(var status:Status=Status.NORMAL,var question: Question=Question.NAM
     }
 
     fun listenAnswer(answer:String):Pair<String,Triple<Int,Int,Int>> {
-        return if (question.answer.contains(answer.toLowerCase()) && question!=Question.IDLE) {
+        return if (question.answer.contains(answer) && question!=Question.IDLE) {
             question = question.nextQuestion()
             "Отлично - ты справился\n${question.question}" to status.color
         }
         else if(question==Question.IDLE)
-            "Отлично - ты справился\nНа этом все, вопросов больше нет" to Status.NORMAL.color
+            "На этом все, вопросов больше нет" to Status.NORMAL.color
         else{
-            "Это неправильный ответ\n${question.question}" to status.nextStatus().color
+            "Это не правильный ответ\n${question.question}" to status.nextStatus().color
         }
     }
 
