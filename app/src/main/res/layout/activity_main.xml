@@ -10,7 +10,7 @@
         android:gravity="center">
 
     <TextView
-            android:id="@+id/tvText"
+            android:id="@+id/tv_text"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:text="Hello World!"
@@ -22,7 +22,7 @@
             android:textSize="@dimen/font_large_24"
     />
     <ImageView
-            android:id="@+id/ivBender"
+            android:id="@+id/iv_bender"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:src="@drawable/bender_dance"
@@ -38,13 +38,14 @@
             android:layout_marginTop="@dimen/spacing_normal_16">
 
         <EditText
-                android:id="@+id/etMessage"
+                android:id="@+id/et_message"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="@color/color_gray_light"
                 android:textColorHint="@color/color_gray_light"
                 android:hint="Введите текст"
+                android:imeOptions="actionDone"
                 android:paddingTop="@dimen/spacing_normal_16"
                 android:paddingBottom="@dimen/spacing_normal_16"
                 android:layout_marginLeft="@dimen/spacing_normal_16"
@@ -52,7 +53,7 @@
         />
 
         <ImageView
-                android:id="@+id/ivSendButton"
+                android:id="@+id/iv_send"
                 android:layout_width="@dimen/spacing_large_24"
                 android:layout_height="@dimen/spacing_large_24"
                 android:src="@drawable/ic_send_black_24dp"

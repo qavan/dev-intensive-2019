@@ -26,10 +26,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_main)
         Log.d("M_MainActivity","onCreate")
 
-        benderImage = ivBender
-        textTxt = tvText
-        messageEt = etMessage
-        sendBtn = ivSendButton
+        benderImage = iv_bender
+        textTxt = tv_text
+        messageEt = et_message
+        sendBtn = iv_send
 
         val status = savedInstanceState?.getString("STATUS") ?: Bender.Status.NORMAL.name
         val question = savedInstanceState?.getString("QUESTION") ?: Bender.Question.NAME.name
@@ -40,6 +40,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         textTxt.text = benderObj.askQuestion()
         sendBtn.setOnClickListener(this)
+
+//        messageEt.setOnEditorActionListener { v, actionId, event ->
+//            {
+//                val (phrase, color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
+//                messageEt.setText("")
+//                val (r, g, b) = color
+//                benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
+//                textTxt.setText(phrase)
+//            }
+//        }
     }
 
     override fun onRestart() {
@@ -80,7 +90,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        if (v?.id == R.id.ivSendButton) {
+        if (v?.id == R.id.iv_send) {
            val (phrase,color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
             messageEt.setText("")
             val (r,g,b) = color
