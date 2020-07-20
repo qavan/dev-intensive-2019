@@ -41,15 +41,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         textTxt.text = benderObj.askQuestion()
         sendBtn.setOnClickListener(this)
 
-//        messageEt.setOnEditorActionListener { v, actionId, event ->
-//            {
-//                val (phrase, color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
-//                messageEt.setText("")
-//                val (r, g, b) = color
-//                benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
-//                textTxt.setText(phrase)
-//            }
-//        }
     }
 
     override fun onRestart() {
@@ -91,11 +82,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         if (v?.id == R.id.iv_send) {
-           val (phrase,color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
+            if (benderObj.question.validate(messageEt.text.toString()) == "" && benderObj.question !=Bender.Question.IDLE) {
+                val (phrase,color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
+                val (r,g,b) = color
+                benderImage.setColorFilter(Color.rgb(r,g,b),PorterDuff.Mode.MULTIPLY)
+                textTxt.text = phrase
+            }
+            else if (benderObj.question != Bender.Question.IDLE) {
+                textTxt.text = "${benderObj.question.validate(messageEt.text.toString())}${benderObj.question.question}"
+            }
+            else {
+                textTxt.text = "${benderObj.question.question}"
+            }
             messageEt.setText("")
-            val (r,g,b) = color
-            benderImage.setColorFilter(Color.rgb(r,g,b),PorterDuff.Mode.MULTIPLY)
-            textTxt.text = phrase
         }
     }
 }

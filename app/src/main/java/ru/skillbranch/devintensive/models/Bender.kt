@@ -12,11 +12,12 @@ class Bender(var status:Status=Status.NORMAL,var question: Question=Question.NAM
     }
 
     fun listenAnswer(answer:String):Pair<String,Triple<Int,Int,Int>> {
-        return if (question.answer.contains(answer.toLowerCase())) {
+        return if (question.answer.contains(answer.toLowerCase()) && question!=Question.IDLE) {
             question = question.nextQuestion()
-            if (question==Question.IDLE) "Отлично - ты справился\nНа этом все, вопросов больше нет" to status.color
-            else "Отлично - ты справился\n${question.question}" to status.color
+            "Отлично - ты справился\n${question.question}" to Status.NORMAL.color
         }
+        else if(question==Question.IDLE)
+            "Отлично - ты справился\nНа этом все, вопросов больше нет" to Status.NORMAL.color
         else{
             status = status.nextStatus()
             "Это не правильный ответ!\n${question.question}" to status.color
@@ -34,31 +35,55 @@ class Bender(var status:Status=Status.NORMAL,var question: Question=Question.NAM
                 values()[this.ordinal + 1]
             } else {
                 values()[0]
-
             }
         }
     }
 
     enum class Question(val question:String,val answer: List<String>){
         NAME("Как меня зовут?", listOf("бендер","bender")) {
+            override fun validate(answer: String): String {
+                return if (!answer[0].isUpperCase()) "Имя должно начинаться с заглавной буквы\n" else ""
+            }
+
             override fun nextQuestion(): Question = PROFESSION
         },
         PROFESSION("Назови мою профессию?", listOf("сгибальщик","bender")) {
+            override fun validate(answer: String): String {
+                return if (!answer[0].isLowerCase()) "Профессия должна начинаться со строчной буквы\n" else ""
+            }
+
             override fun nextQuestion(): Question = MATERIAL
         },
         MATERIAL("Из чего я сделан?", listOf("металл","дерево","metal","iron","wood")) {
+            override fun validate(answer: String): String {
+                return if (Regex("[0-9]").containsMatchIn(answer)) "Материал не должен содержать цифр\n" else ""
+            }
+
             override fun nextQuestion(): Question = BDAY
         },
         BDAY("Когда меня создали?", listOf("2993")) {
+            override fun validate(answer: String): String {
+                return if (Regex("[0-9]+").matchEntire(answer)?.value!=answer) "Год моего рождения должен содержать только цифры\n" else ""
+            }
+
             override fun nextQuestion(): Question = SERIAL
         },
         SERIAL("Мой серийный номер?", listOf("2716057")) {
+            override fun validate(answer: String): String {
+                return if (Regex("[0-9]+").matchEntire(answer)?.value?.length != 7) "Серийный номер содержит только цифры, и их 7\n" else ""
+            }
+
             override fun nextQuestion(): Question = IDLE
         },
         IDLE("На этом все, вопросов больше нет", listOf()) {
+            override fun validate(answer: String): String {
+                return ""
+            }
+
             override fun nextQuestion(): Question = IDLE
         };
 
         abstract fun nextQuestion():Question
+        abstract fun validate(answer: String):String
     }
 }
