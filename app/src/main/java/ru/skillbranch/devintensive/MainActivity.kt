@@ -92,8 +92,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        outState?.putString("STATUS",benderObj.status.name)
-        outState?.putString("QUESTION",benderObj.question.name)
+        outState.putString("STATUS",benderObj.status.name)
+        outState.putString("QUESTION",benderObj.question.name)
     }
 
     override fun onClick(v: View?) {

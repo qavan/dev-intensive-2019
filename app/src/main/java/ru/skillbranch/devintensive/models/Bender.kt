@@ -1,5 +1,7 @@
 package ru.skillbranch.devintensive.models
 
+import android.util.Log
+
 class Bender(var status:Status=Status.NORMAL,var question: Question=Question.NAME) {
 
     fun askQuestion():String = when (question) {
@@ -12,14 +14,15 @@ class Bender(var status:Status=Status.NORMAL,var question: Question=Question.NAM
     }
 
     fun listenAnswer(answer:String):Pair<String,Triple<Int,Int,Int>> {
-        return if (question.answer.contains(answer.toLowerCase()) && question!=Question.IDLE) {
+        return if (question.answer.contains(answer) && question!=Question.IDLE) {
             question = question.nextQuestion()
             "Отлично - ты справился\n${question.question}" to status.color
         }
         else if(question==Question.IDLE)
             "На этом все, вопросов больше нет" to status.color
         else{
-            "Это неправильный ответ\n${question.question}" to status.nextStatus().color
+            status = status.nextStatus()
+            "Это неправильный ответ\n${question.question}" to status.color
         }
     }
 
@@ -30,8 +33,8 @@ class Bender(var status:Status=Status.NORMAL,var question: Question=Question.NAM
         CRITICAL(Triple(255, 255, 0));
 
         fun nextStatus(): Status {
-            return if (this.ordinal < values().lastIndex) {
-                values()[this.ordinal + 1]
+            return if (ordinal < values().lastIndex) {
+                values()[ordinal+1]
             } else {
                 values()[0]
             }
