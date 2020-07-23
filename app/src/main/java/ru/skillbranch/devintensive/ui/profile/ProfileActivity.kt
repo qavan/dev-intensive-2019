@@ -5,12 +5,15 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -30,7 +33,7 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var viewFields: Map<String,TextView>
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        //TODO set custom Theme this before super and setContentView
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
         initViews(savedInstanceState)
@@ -77,8 +80,17 @@ class ProfileActivity : AppCompatActivity() {
         showCurrentMode(isEditMode)
 
         btn_edit.setOnClickListener {
-            if (isEditMode) saveProfileInfo()
-            isEditMode = !isEditMode
+            if (!isEditMode) isEditMode = !isEditMode
+            else if (isEditMode) {
+                if (Regex("""^(https://)?(.+.)(www.)?github.com/?(enterprise|features|topics|collections|trending|events|marketplace|pricing|nonprofit|customer-stories|security|login|join)/?""").find(et_repository.text.toString())?.value==null && Regex("""^(https://)?(.+.)?(www.)?github.com/?[a-zA-Z]+$""").find(et_repository.text.toString())?.value!=null) {
+                    saveProfileInfo()
+                    isEditMode = !isEditMode
+                    wr_repository.error = ""
+                }
+                else {
+                    wr_repository.error = "Невалидный адрес репозитория"
+                }
+            }
             showCurrentMode(isEditMode)
         }
 
