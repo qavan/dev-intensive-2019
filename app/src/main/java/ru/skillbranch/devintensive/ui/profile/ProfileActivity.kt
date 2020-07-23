@@ -81,6 +81,7 @@ class ProfileActivity : AppCompatActivity() {
                     wr_repository.error = ""
                 }
                 else {
+                    et_repository.setText("")
                     wr_repository.error = "Невалидный адрес репозитория"
                 }
             }
