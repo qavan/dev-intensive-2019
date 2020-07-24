@@ -5,6 +5,8 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
@@ -43,6 +45,18 @@ class ProfileActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this).get(ProfileViewModel::class.java)
         viewModel.getProfileDate().observe(this, Observer {updateUI(it)})
         viewModel.getTheme().observe(this, Observer {updateTheme(it)})
+        viewModel.isRepositoryValid().observe(this, Observer {validRepo(it)})
+    }
+
+    private fun validRepo(isValid: Boolean) {
+        if (isValid) {
+            wr_repository.error = null
+            wr_repository.isErrorEnabled = false
+        }
+        else {
+            wr_repository.error = "Невалидный адрес репозитория"
+            et_repository.requestFocus()
+        }
     }
 
     private fun updateTheme(it: Int) {
@@ -72,19 +86,20 @@ class ProfileActivity : AppCompatActivity() {
         isEditMode = savedInstanceState?.getBoolean(IS_EDIT_MODE, false) ?: false
         showCurrentMode(isEditMode)
 
-        btn_edit.setOnClickListener {
-            if (!isEditMode) isEditMode = !isEditMode
-            else if (isEditMode) {
-                if (et_repository.text.toString() == "" || (Regex("""^(https://)?(www.)?github.com/?(enterprise|features|topics|collections|trending|events|marketplace|pricing|nonprofit|customer-stories|security|login|join)/?""").find(et_repository.text.toString())?.value==null && Regex("""^(https://)?(www\.)?github\.com/?[a-zA-Z]+/?$""").find(et_repository.text.toString())?.value!=null)) {
-                    saveProfileInfo()
-                    isEditMode = !isEditMode
-                    wr_repository.error = ""
-                }
-                else {
-                    et_repository.setText("")
-                    wr_repository.error = "Невалидный адрес репозитория"
-                }
+        et_repository.addTextChangedListener(object : TextWatcher {
+            override fun onTextChanged(text: CharSequence, p1: Int, p2: Int, p3: Int) {
+                viewModel.repoValidation(text.toString())
             }
+            override fun afterTextChanged(p0: Editable?) {}
+            override fun beforeTextChanged(text: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        })
+
+        btn_edit.setOnClickListener {
+            if (wr_repository.error == "Невалидный адрес репозитория"){
+                et_repository.setText("")
+            }
+            saveProfileInfo()
+            isEditMode = !isEditMode
             showCurrentMode(isEditMode)
         }
 
@@ -108,6 +123,7 @@ class ProfileActivity : AppCompatActivity() {
 
         ic_eye.visibility = if (isEdit) View.GONE else View.VISIBLE
         wr_about.isCounterEnabled = isEdit
+        wr_repository.isCounterEnabled = isEdit
 
         with(btn_edit) {
             val filter: ColorFilter? = if (isEdit) {
