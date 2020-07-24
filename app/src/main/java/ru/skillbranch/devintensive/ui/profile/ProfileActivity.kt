@@ -75,7 +75,7 @@ class ProfileActivity : AppCompatActivity() {
         btn_edit.setOnClickListener {
             if (!isEditMode) isEditMode = !isEditMode
             else if (isEditMode) {
-                if (et_repository.text.toString() == "" || (Regex("""^(https://)?(.+.)(www.)?github.com/?(enterprise|features|topics|collections|trending|events|marketplace|pricing|nonprofit|customer-stories|security|login|join)/?""").find(et_repository.text.toString())?.value==null && Regex("""^(https://)?(.+.)?(www.)?github.com/?[a-zA-Z]+/?$""").find(et_repository.text.toString())?.value!=null)) {
+                if (et_repository.text.toString() == "" || (Regex("""^(https://)?(.+.)(www.)?github.com/?enterprise|features|topics|collections|trending|events|marketplace|pricing|nonprofit|customer-stories|security|login|join/?""").find(et_repository.text.toString())?.value==null && Regex("""^(https://)?(.+.)?(www.)?github.com/?[a-zA-Z]+/?$""").find(et_repository.text.toString())?.value!=null)) {
                     saveProfileInfo()
                     isEditMode = !isEditMode
                     wr_repository.error = ""
