@@ -11,7 +11,7 @@ data class Profile(
     val rating: Int = 0,
     val respect: Int = 0
 ) {
-    val nickName: String = if (firstName != "" && lastName != "") Utils.transliteration(StringBuilder().append(firstName).append("_").append(lastName).toString(),"_")
+    val nickName: String = if (firstName != "" && lastName != "") Utils.transliteration(StringBuilder().append(firstName).append(" ").append(lastName).toString(),"_")
         else if (firstName != "" && lastName == "") Utils.transliteration(firstName)
         else if (firstName == "" && lastName != "") Utils.transliteration(lastName)
         else "John Doe"
