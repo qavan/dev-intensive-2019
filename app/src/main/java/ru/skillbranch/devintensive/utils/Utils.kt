@@ -1,5 +1,10 @@
 package ru.skillbranch.devintensive.utils
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.shapes.Shape
+
 object Utils {
     fun parseFullName(fullName:String?):Pair<String?,String?> {
         if (fullName==null || fullName.isNullOrBlank()) return null to null
