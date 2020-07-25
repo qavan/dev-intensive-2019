@@ -32,11 +32,14 @@
                          android:layout_marginRight="@dimen/spacing_huge_32"
                          android:layout_marginTop="36dp"
             />
-            <ImageView android:id="@+id/iv_avatar"
-                       android:layout_width="@dimen/avatar_round_size"
-                       android:layout_height="@dimen/avatar_round_size"
-                       android:src="@drawable/avatar_default"
-                       android:layout_centerHorizontal="true"
+            <ru.skillbranch.devintensive.ui.custom.CircleImageView
+                    android:id="@+id/iv_avatar"
+                    android:layout_width="@dimen/avatar_round_size"
+                    android:layout_height="@dimen/avatar_round_size"
+                    app:cv_borderColor="#FF000E"
+                    app:cv_borderWidth="4dp"
+                    android:src="@drawable/avatar_default"
+                    android:layout_centerHorizontal="true"
             />
             <ImageButton android:id="@+id/btn_edit"
                     android:layout_width="@dimen/btn_round_size_40"
