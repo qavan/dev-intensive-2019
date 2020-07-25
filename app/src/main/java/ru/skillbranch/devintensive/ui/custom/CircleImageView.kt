@@ -19,21 +19,21 @@ class CircleImageView @JvmOverloads constructor(
 ): ImageView(context,attrs,defStyleAttr) {
     companion object{
         private const val DEFAULT_CV_BORDER_COLOR = Color.WHITE
-        private const val DEFAULT_TEXT = ""
+//        private const val DEFAULT_TEXT = ""
     }
 
     @Dimension private val DEFAULT_CV_BORDER_WIDTH = Utils.convertDpToPx(context, 2F)
 
     private var cv_borderColor = DEFAULT_CV_BORDER_COLOR
     private var cv_borderWidth = DEFAULT_CV_BORDER_WIDTH
-    private var cv_text = DEFAULT_TEXT
+//    private var cv_text = DEFAULT_TEXT
 
     init {
         if (attrs!=null) {
             val a = context.obtainStyledAttributes(attrs, R.styleable.CircleImageView)
             cv_borderColor = a.getColor(R.styleable.CircleImageView_cv_borderColor, DEFAULT_CV_BORDER_COLOR)
             cv_borderWidth = a.getDimensionPixelSize(R.styleable.CircleImageView_cv_borderWidth, DEFAULT_CV_BORDER_WIDTH)
-            cv_text = a.getString(R.styleable.CircleImageView_cv_text).toString()
+//            cv_text = a.getString(R.styleable.CircleImageView_cv_text).toString()
             a.recycle()
         }
     }
