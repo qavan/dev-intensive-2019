@@ -1,9 +1,11 @@
 package ru.skillbranch.devintensive.utils
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.shapes.Shape
+import kotlin.math.roundToInt
 
 object Utils {
     fun parseFullName(fullName:String?):Pair<String?,String?> {
@@ -110,5 +112,18 @@ object Utils {
         val firstInit = name?.toString() ?: ""
         val secondInit = surname?.toString() ?: ""
         return "$firstInit$secondInit".ifEmpty { null }
+    }
+
+
+    fun convertPxToDp(context: Context, px: Int): Int {
+        return (px / context.resources.displayMetrics.density).roundToInt()
+    }
+
+    fun convertDpToPx(context: Context, dp: Float): Int {
+        return (dp * context.resources.displayMetrics.density).roundToInt()
+    }
+
+    fun convertSpToPx(context: Context, sp: Int): Int {
+        return sp * context.resources.displayMetrics.scaledDensity.roundToInt()
     }
 }
