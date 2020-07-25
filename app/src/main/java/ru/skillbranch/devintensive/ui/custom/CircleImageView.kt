@@ -2,7 +2,9 @@ package ru.skillbranch.devintensive.ui.custom
 
 import android.content.Context
 import android.graphics.*
+import android.graphics.drawable.BitmapDrawable
 import android.util.AttributeSet
+import android.view.View
 import android.widget.ImageView
 import androidx.annotation.ColorRes
 import androidx.annotation.Dimension
@@ -11,6 +13,7 @@ import androidx.core.graphics.drawable.toBitmap
 import ru.skillbranch.devintensive.App
 import ru.skillbranch.devintensive.R
 import ru.skillbranch.devintensive.utils.Utils
+import kotlin.math.min
 
 class CircleImageView @JvmOverloads constructor(
     context: Context,
@@ -36,6 +39,7 @@ class CircleImageView @JvmOverloads constructor(
 //            cv_text = a.getString(R.styleable.CircleImageView_cv_text).toString()
             a.recycle()
         }
+        setLayerType(View.LAYER_TYPE_SOFTWARE, null)
     }
 
     @Dimension
@@ -59,7 +63,29 @@ class CircleImageView @JvmOverloads constructor(
         this.invalidate()
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
+        if (width == 0 || height == 0 ) return
+        val image = getBitmapFromDrawable(width,height) ?: return
+        val halfWidth = width/2f
+        val halfHeight = height/2f
+        val rad = min(halfWidth,halfHeight)
+
+        val circlePaint = Paint(Paint.ANTI_ALIAS_FLAG)
+//        circlePaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC)
+        canvas.drawCircle(halfWidth,halfHeight, rad,circlePaint)
+//        circlePaint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
+        canvas.drawBitmap(image as Bitmap,0f,0f,circlePaint)
+
+        if (cv_borderWidth>0) {
+            val borderPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+            borderPaint.color = cv_borderColor
+            borderPaint.strokeWidth = cv_borderWidth.toFloat()
+            borderPaint.style = Paint.Style.STROKE
+            canvas.drawCircle(halfWidth,halfHeight, rad-cv_borderWidth/2,borderPaint)
+        }
+
+
+
 
 //        if (cv_text.isNotBlank()) {
 //            val fontPaint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -78,16 +104,22 @@ class CircleImageView @JvmOverloads constructor(
 //            canvas?.drawText(cv_text,width/2f,width/2f,fontPaint)
 //        }
 //        else {
-            val circlePaint = Paint(Paint.ANTI_ALIAS_FLAG)
-            circlePaint.color = cv_borderColor
-            circlePaint.strokeWidth = cv_borderWidth.toFloat()
-            circlePaint.style = Paint.Style.STROKE
-
-            canvas?.drawBitmap(this.drawable.toBitmap(), imageMatrix, null)
-        //
-            canvas?.drawCircle(width/2f,width/2f, (width-cv_borderWidth)/2f,circlePaint)
 //        }
 
+    }
+
+    private fun getBitmapFromDrawable(width: Int, height: Int): Any? {
+        if (drawable == null)
+            return null
+
+        if (drawable is BitmapDrawable)
+            return (drawable as BitmapDrawable).bitmap
+
+        val bmp =  drawable.toBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bmp)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+        return bmp
     }
 
 }
