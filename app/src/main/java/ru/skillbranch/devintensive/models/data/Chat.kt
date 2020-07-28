@@ -17,12 +17,12 @@ data class Chat(
         //TODO
         return 0
     }
-    private fun lastMessageDate(): Date {
+    fun lastMessageDate(): Date {
         //TODO
         return Date()
     }
 
-    private fun lastMessageShort():Pair<String, String> {
+    fun lastMessageShort():Pair<String, String> {
         //TODO
         return "Сообщений еще нет" to "@John_Doe"
     }

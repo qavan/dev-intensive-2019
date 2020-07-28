@@ -14,7 +14,7 @@ import ru.skillbranch.devintensive.models.data.ChatItem
 import ru.skillbranch.devintensive.models.data.UserItem
 
 class UserAdapter(val listener : (UserItem) -> Unit) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
-    private var items = listOf<UserItem>()
+    var items = listOf<UserItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val inflater = LayoutInflater.from(parent.context)
