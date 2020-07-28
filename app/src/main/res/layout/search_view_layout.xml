@@ -1,0 +1,10 @@
+<androidx.appcompat.widget.SearchView
+		android:id="@+id/search_view"
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:inputType="textPersonName"
+		android:maxWidth="9999dp"
+>
+
+</androidx.appcompat.widget.SearchView>
