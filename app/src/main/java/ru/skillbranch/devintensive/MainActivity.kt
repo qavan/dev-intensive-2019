@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     fun logic() {
-        if (benderObj.question.validate(messageEt.text.toString()) == "" && benderObj.question !=Bender.Question.IDLE) {
+        if (benderObj.question.validate(messageEt.text.toString())=="" && benderObj.question !=Bender.Question.IDLE) {
             val (phrase,color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
             val (r,g,b) = color
             benderImage.setColorFilter(Color.rgb(r,g,b),PorterDuff.Mode.MULTIPLY)
