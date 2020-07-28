@@ -2,6 +2,8 @@ package ru.skillbranch.devintensive.models.data
 
 import ru.skillbranch.devintensive.extensions.shortFormat
 import ru.skillbranch.devintensive.models.BaseMessage
+import ru.skillbranch.devintensive.models.ImageMessage
+import ru.skillbranch.devintensive.models.TextMessage
 import ru.skillbranch.devintensive.utils.Utils
 import java.util.*
 
@@ -14,17 +16,29 @@ data class Chat(
 ) {
 
     fun unreadableMessageCount():Int {
-        //TODO
-        return 0
+        return if (messages.isNullOrEmpty()) {
+            0
+        } else {
+            messages.filter { !it.isReaded }.count()
+        }
     }
+
     fun lastMessageDate(): Date {
-        //TODO
-        return Date()
+        return if (messages.isNullOrEmpty()) Date()
+        else {
+            messages.last().date
+        }
     }
 
     fun lastMessageShort():Pair<String, String> {
-        //TODO
-        return "Сообщений еще нет" to "@John_Doe"
+        return if (messages.isNullOrEmpty()) "Сообщений еще нет" to "@John_Doe"
+        else {
+            when {
+                messages.last() is TextMessage -> (messages.last() as TextMessage).text.toString() to "${messages.last().from.firstName}"
+                messages.last() is ImageMessage -> "отправил фото" to "${messages.last().from.firstName} ${messages.last().from.firstName}"
+                else -> (messages.last() as TextMessage).text.toString() to messages.last().from.firstName.toString()
+            }
+        }
     }
 
     private fun isSingle():Boolean = members.size == 1
