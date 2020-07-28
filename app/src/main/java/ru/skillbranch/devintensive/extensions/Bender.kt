@@ -1,8 +1,6 @@
-package ru.skillbranch.devintensive.models
+package ru.skillbranch.devintensive.extensions
 
-import android.util.Log
-
-class Bender(var status:Status=Status.NORMAL,var question: Question=Question.NAME) {
+class Bender(var status: Status = Status.NORMAL, var question: Question = Question.NAME) {
 
     fun askQuestion():String = when (question) {
         Question.NAME -> Question.NAME.question
@@ -14,11 +12,11 @@ class Bender(var status:Status=Status.NORMAL,var question: Question=Question.NAM
     }
 
     fun listenAnswer(answer:String):Pair<String,Triple<Int,Int,Int>> {
-        return if (question.answer.contains(answer) && question!=Question.IDLE) {
+        return if (question.answer.contains(answer) && question!= Question.IDLE) {
             question = question.nextQuestion()
             "Отлично - ты справился\n${question.question}" to status.color
         }
-        else if(question==Question.IDLE)
+        else if(question== Question.IDLE)
             "На этом все, вопросов больше нет" to status.color
         else{
             status = status.nextStatus()
@@ -47,45 +45,51 @@ class Bender(var status:Status=Status.NORMAL,var question: Question=Question.NAM
                 return if (answer == "" || !answer[0].isUpperCase()) "Имя должно начинаться с заглавной буквы\n" else ""
             }
 
-            override fun nextQuestion(): Question = PROFESSION
+            override fun nextQuestion(): Question =
+                PROFESSION
         },
         PROFESSION("Назови мою профессию?", listOf("сгибальщик","bender")) {
             override fun validate(answer: String): String {
                 return if (answer == "" || !answer[0].isLowerCase()) "Профессия должна начинаться со строчной буквы\n" else ""
             }
 
-            override fun nextQuestion(): Question = MATERIAL
+            override fun nextQuestion(): Question =
+                MATERIAL
         },
         MATERIAL("Из чего я сделан?", listOf("металл","дерево","metal","iron","wood")) {
             override fun validate(answer: String): String {
                 return if (answer == "" || Regex("[0-9]").containsMatchIn(answer)) "Материал не должен содержать цифр\n" else ""
             }
 
-            override fun nextQuestion(): Question = BDAY
+            override fun nextQuestion(): Question =
+                BDAY
         },
         BDAY("Когда меня создали?", listOf("2993")) {
             override fun validate(answer: String): String {
                 return if (answer == "" || Regex("[0-9]+").matchEntire(answer)?.value!=answer) "Год моего рождения должен содержать только цифры\n" else ""
             }
 
-            override fun nextQuestion(): Question = SERIAL
+            override fun nextQuestion(): Question =
+                SERIAL
         },
         SERIAL("Мой серийный номер?", listOf("2716057")) {
             override fun validate(answer: String): String {
                 return if (answer == "" || Regex("[0-9]+").matchEntire(answer)?.value?.length != 7) "Серийный номер содержит только цифры, и их 7\n" else ""
             }
 
-            override fun nextQuestion(): Question = IDLE
+            override fun nextQuestion(): Question =
+                IDLE
         },
         IDLE("На этом все, вопросов больше нет", listOf()) {
             override fun validate(answer: String): String {
                 return ""
             }
 
-            override fun nextQuestion(): Question = IDLE
+            override fun nextQuestion(): Question =
+                IDLE
         };
 
-        abstract fun nextQuestion():Question
+        abstract fun nextQuestion(): Question
         abstract fun validate(answer: String):String
     }
 }

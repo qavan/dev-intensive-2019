@@ -1,7 +1,6 @@
-package ru.skillbranch.devintensive.models
+package ru.skillbranch.devintensive.extensions
 
 import ru.skillbranch.devintensive.utils.Utils
-import java.lang.StringBuilder
 
 data class Profile(
     val firstName: String,
