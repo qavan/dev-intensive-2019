@@ -14,107 +14,83 @@ import ru.skillbranch.devintensive.models.Bender
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView.OnEditorActionListener
 import android.R.attr.password
+import android.text.InputType
 import android.view.KeyEvent
 import ru.skillbranch.devintensive.extensions.hideKeyboard
 
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
+    lateinit var benderImage: ImageView
+    lateinit var textTxt: TextView
+    lateinit var messageEt: EditText
+    lateinit var sendBtn: ImageView
 
-    lateinit var benderImage:ImageView
-    lateinit var textTxt:TextView
-    lateinit var messageEt:EditText
-    lateinit var sendBtn:ImageView
-
-    lateinit var benderObj:Bender
+    lateinit var benderObj: Bender
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        Log.d("M_MainActivity","onCreate")
 
         benderImage = iv_bender
         textTxt = tv_text
         messageEt = et_message
         sendBtn = iv_send
 
+        makeSendOnActionDone(messageEt)
         val status = savedInstanceState?.getString("STATUS") ?: Bender.Status.NORMAL.name
         val question = savedInstanceState?.getString("QUESTION") ?: Bender.Question.NAME.name
-        benderObj = Bender(Bender.Status.valueOf(status),Bender.Question.valueOf(question))
+        benderObj = Bender(Bender.Status.valueOf(status), Bender.Question.valueOf(question))
 
-        val (r,g,b) = benderObj.status.color
-        benderImage.setColorFilter(Color.rgb(r,g,b),PorterDuff.Mode.MULTIPLY)
+        val (r, g, b) = benderObj.status.color
+        benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
 
         textTxt.text = benderObj.askQuestion()
         sendBtn.setOnClickListener(this)
-
-        messageEt.setOnEditorActionListener(object : OnEditorActionListener {
-            override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent?): Boolean {
-                return if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    logic()
-                    hideKeyboard()
-                    true
-                } else false
-            }
-        })
-
     }
 
-    override fun onRestart() {
-        super.onRestart()
-        Log.d("M_MainActivity","onRestart")
+    private fun makeSendOnActionDone(editText: EditText) {
+        editText.setRawInputType(InputType.TYPE_CLASS_TEXT)
+        editText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) sendBtn.performClick()
+            false
+        }
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.d("M_MainActivity","onStart")
+    override fun onClick(v: View?) {
+        if (v?.id == R.id.iv_send)
+            if (isAnswerValid())
+                sendAnswer()
+            else makeErrorMessage()
     }
 
-    override fun onResume() {
-        super.onResume()
-        Log.d("M_MainActivity","onResume")
+    private fun makeErrorMessage() {
+        val errorMessage = when (benderObj.question) {
+            Bender.Question.NAME -> "Имя должно начинаться с заглавной буквы"
+            Bender.Question.PROFESSION -> "Профессия должна начинаться со строчной буквы"
+            Bender.Question.MATERIAL -> "Материал не должен содержать цифр"
+            Bender.Question.BDAY -> "Год моего рождения должен содержать только цифры"
+            Bender.Question.SERIAL -> "Серийный номер содержит только цифры, и их 7"
+            else -> "На этом все, вопросов больше нет"
+        }
+        textTxt.text = errorMessage + "\n" + benderObj.question.question
+        messageEt.setText("")
     }
 
-    override fun onPause() {
-        super.onPause()
-        Log.d("M_MainActivity","onPause")
+    private fun isAnswerValid(): Boolean {
+        return benderObj.question.validate(messageEt.text.toString())
     }
 
-    override fun onStop() {
-        super.onStop()
-        Log.d("M_MainActivity","onStop")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("M_MainActivity","onDestroy")
+    private fun sendAnswer() {
+        val (phase, color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
+        messageEt.setText("")
+        val (r, g, b) = color
+        benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
+        textTxt.text = phase
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-
-        outState.putString("STATUS",benderObj.status.name)
-        outState.putString("QUESTION",benderObj.question.name)
-    }
-
-    override fun onClick(v: View?) {
-        if (v?.id == R.id.iv_send) {
-            logic()
-        }
-    }
-
-    fun logic() {
-        if (benderObj.question.validate(messageEt.text.toString()) && benderObj.question !=Bender.Question.IDLE) {
-            val (phrase,color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
-            val (r,g,b) = color
-            benderImage.setColorFilter(Color.rgb(r,g,b),PorterDuff.Mode.MULTIPLY)
-            textTxt.text = phrase
-        }
-        else if (benderObj.question != Bender.Question.IDLE) {
-            textTxt.text = "${benderObj.question.validate(messageEt.text.toString())}${benderObj.question.question}"
-        }
-        else {
-            textTxt.text = "${benderObj.question.question}"
-        }
-        messageEt.setText("")
+        outState?.putString("STATUS", benderObj.status.name)
+        outState?.putString("QUESTION", benderObj.question.name)
     }
 }
