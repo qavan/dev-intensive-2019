@@ -16,6 +16,7 @@ class Bender(var status:Status=Status.NORMAL,var question: Question=Question.NAM
     fun listenAnswer(answer:String):Pair<String,Triple<Int,Int,Int>> {
         return if (question.answer.contains(answer.toLowerCase()) && question!=Question.IDLE) {
             question = question.nextQuestion()
+            status  = Status.NORMAL
             "Отлично - ты справился\n${question.question}" to status.color
         }
         else if(question==Question.IDLE)
@@ -26,7 +27,7 @@ class Bender(var status:Status=Status.NORMAL,var question: Question=Question.NAM
         }
     }
 
-    enum class Status(val color:Triple<Int,Int,Int>) {
+    enum class Status(var color:Triple<Int,Int,Int>) {
         NORMAL(Triple(255, 255, 255)),
         WARNING(Triple(255, 120, 0)),
         DANGER(Triple(255, 60, 60)),
