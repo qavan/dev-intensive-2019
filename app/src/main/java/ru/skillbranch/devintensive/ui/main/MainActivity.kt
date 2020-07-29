@@ -13,7 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.skillbranch.devintensive.R
 import ru.skillbranch.devintensive.extensions.mutableLiveData
-import ru.skillbranch.devintensive.models.data.Chat
+import ru.skillbranch.devintensive.models.data.ChatType
 import ru.skillbranch.devintensive.ui.adapters.ChatAdapter
 import ru.skillbranch.devintensive.ui.adapters.ChatItemTouchHelperCallback
 import ru.skillbranch.devintensive.ui.archive.ArchiveActivity
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
     private fun initViews() {
 
         chatAdapter = ChatAdapter{
-            if (it.chatType == Chat.ChatType.ARCHIVE) startActivity(Intent(this,ArchiveActivity::class.java))
+            if (it.chatType == ChatType.ARCHIVE) startActivity(Intent(this,ArchiveActivity::class.java))
             else Snackbar.make(rv_chat_list,"Click on ${it.title}",Snackbar.LENGTH_LONG).show()
         }
 

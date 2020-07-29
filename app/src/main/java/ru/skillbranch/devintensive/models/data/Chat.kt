@@ -105,10 +105,10 @@ data class Chat(
             )
         }
     }
+}
 
-    enum class ChatType{
-        SINGLE,
-        GROUP,
-        ARCHIVE
-    }
+enum class ChatType{
+    SINGLE,
+    GROUP,
+    ARCHIVE
 }
