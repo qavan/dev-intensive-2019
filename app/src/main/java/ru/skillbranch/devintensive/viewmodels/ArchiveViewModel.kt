@@ -11,25 +11,12 @@ import ru.skillbranch.devintensive.models.data.Chat
 import ru.skillbranch.devintensive.models.data.ChatItem
 import ru.skillbranch.devintensive.repositories.ChatRepository
 
-class MainViewModel :  ViewModel() {
+class ArchiveViewModel :  ViewModel() {
     private val query = mutableLiveData("")
     private val chatRepository = ChatRepository
 
-    private val chats: LiveData<List<ChatItem>>  = Transformations.map(chatRepository.loadChats()) {chats ->
-        val archivedCandidate = listOf(chats.filter{it.isArchived}.sortedBy { it.lastMessageDate() })
-        val archivedChat = if (archivedCandidate[0].isNotEmpty())
-                            {
-                                val messages = mutableListOf<BaseMessage>()
-                                archivedCandidate[0].forEach { messages +=it.messages }
-                                archivedCandidate[0][0].copy(id="-1",messages = messages) //it.messages.sumBy{it.isReaded == false}
-                            }
-                            else
-                                Chat("","")
-        val chatS = if (archivedChat.id != "")
-                        (listOf(archivedChat) + chats.filter{!it.isArchived})
-                    else
-                        chats.filter{!it.isArchived}
-        return@map chatS.map{it.toChatItem()}.sortedBy { it.id.toInt() }
+    private val chats: LiveData<List<ChatItem>> = Transformations.map(chatRepository.loadChats()) {chats ->
+        return@map chats.filter{it.isArchived}.map{it.toChatItem()}.sortedBy { it.id.toInt() }
     }
 
     fun getChatData() : LiveData<List<ChatItem>> {
@@ -48,14 +35,14 @@ class MainViewModel :  ViewModel() {
         return result
     }
 
-    fun addToArchive(chatId: String) {
-        val chat = chatRepository.find(chatId)
-        chat ?: return
-        Log.d("M_MainViewModel","addToArchive $chatId")
-        chatRepository.update(chat.copy(isArchived = true))
-    }
+//    fun addToArchive(chatId: String) {
+//        val chat = chatRepository.find(chatId)
+//        chat ?: return
+//        Log.d("M_MainViewModel","addToArchive $chatId")
+//        chatRepository.update(chat.copy(isArchived = true))
+//    }
 
-    fun restoreFromArchive(chatId: String) {
+    fun removeFromArchive(chatId: String) {
         val chat = chatRepository.find(chatId)
         chat ?: return
         Log.d("M_MainViewModel","restoreFromArchive $chatId")
