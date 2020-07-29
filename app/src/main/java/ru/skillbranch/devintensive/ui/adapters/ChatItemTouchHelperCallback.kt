@@ -20,7 +20,7 @@ class ChatItemTouchHelperCallback(
     private val iconBounds = Rect()
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-        return if (viewHolder is ItemTouchViewHolder ) {
+        return if (viewHolder is ItemTouchViewHolder && !(viewHolder.adapterPosition == 0 && adapter.items[viewHolder.adapterPosition].chatType == Chat.ChatType.ARCHIVE)) {
             makeFlag(ItemTouchHelper.ACTION_STATE_SWIPE, ItemTouchHelper.START)
         }
         else {
@@ -37,10 +37,7 @@ class ChatItemTouchHelperCallback(
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        if (adapter.items[viewHolder.adapterPosition].chatType != Chat.ChatType.ARCHIVE)
             swipeLitener.invoke(adapter.items[viewHolder.adapterPosition])
-        else
-            adapter.notifyItemChanged(viewHolder.adapterPosition)
     }
 
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
