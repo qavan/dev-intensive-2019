@@ -19,7 +19,7 @@
 			android:id="@+id/tv_title_archive"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			tools:text="Архив чатов"
+			android:text="Архив чатов"
 			android:textColor="@color/color_primary"
 			android:fontFamily="sans-serif-medium"
 			android:textSize="14sp"

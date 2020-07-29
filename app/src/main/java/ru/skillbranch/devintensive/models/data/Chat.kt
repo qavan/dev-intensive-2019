@@ -47,28 +47,30 @@ data class Chat(
         return  if (isSingle()) {
             val user = members.first()
             ChatItem(
-                id,
-                user.avatar,
-                Utils.toInitials(user.firstName,user.lastName) ?: "??",
-                "${user.firstName?:""} ${user.lastName?:""}",
-                lastMessageShort().first,
-                unreadableMessageCount(),
-                lastMessageDate().shortFormat(),
-                user.isOnline
+                id = id,
+                avatar = user.avatar,
+                initials = Utils.toInitials(user.firstName,user.lastName) ?: "??",
+                title = "${user.firstName?:""} ${user.lastName?:""}",
+                shortDescription = lastMessageShort().first,
+                messageCount = unreadableMessageCount(),
+                lastMessageDate = lastMessageDate().shortFormat(),
+                isOnline = user.isOnline,
+                chatType = if (isArchived) ChatType.ARCHIVE else ChatType.SINGLE,
+                author = user.firstName
             )
         }
         else {
             ChatItem(
-                id,
-                null,
-                "",
-                title,
-                lastMessageShort().first,
-                unreadableMessageCount(),
-                lastMessageDate().shortFormat(),
-                false,
-                ChatType.GROUP,
-                lastMessageShort().second
+                id = id,
+                avatar = null,
+                initials = "",
+                title = title,
+                shortDescription = lastMessageShort().first,
+                messageCount = unreadableMessageCount(),
+                lastMessageDate = lastMessageDate().shortFormat(),
+                isOnline = false,
+                chatType = if (isArchived) ChatType.ARCHIVE else ChatType.GROUP,
+                author = lastMessageShort().second
             )
         }
     }

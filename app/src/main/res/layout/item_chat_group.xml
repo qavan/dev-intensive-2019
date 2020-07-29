@@ -26,7 +26,6 @@
 			android:layout_toRightOf="@id/iv_avatar_group"
 			android:layout_toLeftOf="@id/tv_date_group"
 			android:layout_marginRight="@dimen/spacing_normal_16"
-			android:maxLength="1"
 
 	/>
 

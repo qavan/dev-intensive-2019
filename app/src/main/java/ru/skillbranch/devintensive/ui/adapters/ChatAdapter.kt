@@ -37,7 +37,7 @@ class ChatAdapter(val listener: (ChatItem) -> Unit) : RecyclerView.Adapter<ChatA
         return when(viewType) {
             SINGLE_TYPE -> SingleViewHolder(inflater.inflate(R.layout.item_chat_single,parent,false))
             GROUP_TYPE -> GroupViewHolder(inflater.inflate(R.layout.item_chat_group,parent,false))
-            ARCHIVE_TYPE -> ArchiveViewHolder(inflater.inflate(R.layout.item_chat_group,parent,false))
+            ARCHIVE_TYPE -> ArchiveViewHolder(inflater.inflate(R.layout.item_chat_archive,parent,false))
             else -> SingleViewHolder(inflater.inflate(R.layout.item_chat_single,parent,false))
         }
 
@@ -157,6 +157,9 @@ class ChatAdapter(val listener: (ChatItem) -> Unit) : RecyclerView.Adapter<ChatA
     }
 
     inner class ArchiveViewHolder(convertView : View) : ChatItemViewHolder(convertView), LayoutContainer, ItemTouchViewHolder {
+        init {
+            Log.d("M_ChatAdapter","New archive element")
+        }
         override fun onItemSelected() {
             itemView.setBackgroundColor(Color.LTGRAY)
         }
@@ -176,13 +179,13 @@ class ChatAdapter(val listener: (ChatItem) -> Unit) : RecyclerView.Adapter<ChatA
                 text = item.messageCount.toString()
             }
 
-            tv_title_archive.text = item.title
             tv_message_archive.text = item.shortDescription
 
             with(tv_message_author_archive) {
                 visibility = if (item.messageCount>0) View.VISIBLE else View.GONE
                 text = item.author.toString()
             }
+
             itemView.setOnClickListener {
                 listener.invoke(item)
             }
