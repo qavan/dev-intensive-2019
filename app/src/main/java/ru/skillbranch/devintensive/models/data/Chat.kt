@@ -74,6 +74,37 @@ data class Chat(
             )
         }
     }
+    fun toChatItemAsNonArchive(): ChatItem {
+        return  if (isSingle()) {
+            val user = members.first()
+            ChatItem(
+                id = id,
+                avatar = user.avatar,
+                initials = Utils.toInitials(user.firstName,user.lastName) ?: "??",
+                title = "${user.firstName?:""} ${user.lastName?:""}",
+                shortDescription = lastMessageShort().first,
+                messageCount = unreadableMessageCount(),
+                lastMessageDate = lastMessageDate().shortFormat(),
+                isOnline = user.isOnline,
+                chatType = ChatType.SINGLE,
+                author = user.firstName
+            )
+        }
+        else {
+            ChatItem(
+                id = id,
+                avatar = null,
+                initials = "",
+                title = title,
+                shortDescription = lastMessageShort().first,
+                messageCount = unreadableMessageCount(),
+                lastMessageDate = lastMessageDate().shortFormat(),
+                isOnline = false,
+                chatType = ChatType.GROUP,
+                author = lastMessageShort().second
+            )
+        }
+    }
 
 enum class ChatType{
     SINGLE,
