@@ -37,8 +37,10 @@ class ChatItemTouchHelperCallback(
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-//        if (adapter.items[viewHolder.adapterPosition].chatType != Chat.ChatType.ARCHIVE)
-        swipeLitener.invoke(adapter.items[viewHolder.adapterPosition])
+        if (adapter.items[viewHolder.adapterPosition].chatType != Chat.ChatType.ARCHIVE)
+            swipeLitener.invoke(adapter.items[viewHolder.adapterPosition])
+        else
+            adapter.notifyItemChanged(viewHolder.adapterPosition)
     }
 
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
