@@ -21,7 +21,8 @@ class MainViewModel :  ViewModel() {
                             {
                                 val messages = mutableListOf<BaseMessage>()
                                 archivedCandidate[0].forEach { messages +=it.messages }
-                                archivedCandidate[0].last().copy(id="-1",messages = messages) //it.messages.sumBy{it.isReaded == false}
+                                archivedCandidate[0].sortedBy { it.id.toInt() }
+                                    .first().copy(id="-1",messages = messages) //it.messages.sumBy{it.isReaded == false}
                             }
                             else
                                 Chat("","")

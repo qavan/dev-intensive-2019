@@ -33,13 +33,6 @@ class ArchiveViewModel :  ViewModel() {
         return result
     }
 
-//    fun addToArchive(chatId: String) {
-//        val chat = chatRepository.find(chatId)
-//        chat ?: return
-//        Log.d("M_MainViewModel","addToArchive $chatId")
-//        chatRepository.update(chat.copy(isArchived = true))
-//    }
-
     fun removeFromArchive(chatId: String) {
         val chat = chatRepository.find(chatId)
         chat ?: return

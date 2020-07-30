@@ -147,7 +147,7 @@ class ChatAdapter(val listener: (ChatItem) -> Unit) : RecyclerView.Adapter<ChatA
 
             with(tv_message_author_archive) {
                 visibility = if (item.messageCount>0) View.VISIBLE else View.GONE
-                text = item.author.toString()
+                text = "@${item.author}"
             }
 
             itemView.setOnClickListener {
@@ -183,7 +183,7 @@ class ChatAdapter(val listener: (ChatItem) -> Unit) : RecyclerView.Adapter<ChatA
 
             with(tv_message_author_archive) {
                 visibility = if (item.messageCount>0) View.VISIBLE else View.GONE
-                text = item.author.toString()
+                text = "@${item.author}"
             }
 
             itemView.setOnClickListener {
