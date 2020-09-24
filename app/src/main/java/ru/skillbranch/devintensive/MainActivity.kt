@@ -1,5 +1,6 @@
 package ru.skillbranch.devintensive
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
@@ -12,11 +13,10 @@ import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.skillbranch.devintensive.models.Bender
 import android.view.inputmethod.EditorInfo
-import android.widget.TextView.OnEditorActionListener
-import android.R.attr.password
 import android.text.InputType
-import android.view.KeyEvent
-import ru.skillbranch.devintensive.extensions.hideKeyboard
+import ru.skillbranch.devintensive.enum.Question
+import ru.skillbranch.devintensive.enum.Status
+import java.util.*
 
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
@@ -37,9 +37,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         sendBtn = iv_send
 
         makeSendOnActionDone(messageEt)
-        val status = savedInstanceState?.getString("STATUS") ?: Bender.Status.NORMAL.name
-        val question = savedInstanceState?.getString("QUESTION") ?: Bender.Question.NAME.name
-        benderObj = Bender(Bender.Status.valueOf(status), Bender.Question.valueOf(question))
+        val status = savedInstanceState?.getString("STATUS") ?: Status.NORMAL.name
+        val question = savedInstanceState?.getString("QUESTION") ?: Question.NAME.name
+        benderObj = Bender(Status.valueOf(status), Question.valueOf(question))
 
         val (r, g, b) = benderObj.status.color
         benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
@@ -63,16 +63,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             else makeErrorMessage()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun makeErrorMessage() {
         val errorMessage = when (benderObj.question) {
-            Bender.Question.NAME -> "Имя должно начинаться с заглавной буквы"
-            Bender.Question.PROFESSION -> "Профессия должна начинаться со строчной буквы"
-            Bender.Question.MATERIAL -> "Материал не должен содержать цифр"
-            Bender.Question.BDAY -> "Год моего рождения должен содержать только цифры"
-            Bender.Question.SERIAL -> "Серийный номер содержит только цифры, и их 7"
+            Question.NAME -> "Имя должно начинаться с заглавной буквы"
+            Question.PROFESSION -> "Профессия должна начинаться со строчной буквы"
+            Question.MATERIAL -> "Материал не должен содержать цифр"
+            Question.BDAY -> "Год моего рождения должен содержать только цифры"
+            Question.SERIAL -> "Серийный номер содержит только цифры, и их 7"
             else -> "На этом все, вопросов больше нет"
         }
-        textTxt.text = errorMessage + "\n" + benderObj.question.question
+        textTxt.text = "$errorMessage ${benderObj.question.question}"
         messageEt.setText("")
     }
 
@@ -81,7 +82,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun sendAnswer() {
-        val (phase, color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase())
+        val (phase, color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase(Locale("ru")))
         messageEt.setText("")
         val (r, g, b) = color
         benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
@@ -90,7 +91,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState?.putString("STATUS", benderObj.status.name)
-        outState?.putString("QUESTION", benderObj.question.name)
+        outState.putString("STATUS", benderObj.status.name)
+        outState.putString("QUESTION", benderObj.question.name)
     }
 }
