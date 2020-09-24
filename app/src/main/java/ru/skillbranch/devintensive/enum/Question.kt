@@ -1,6 +1,6 @@
 package ru.skillbranch.devintensive.enum
 
-enum class Question(val question: String, val answer: List<String>) {
+enum class Question(val question: String, val answers: List<String>) {
     NAME("Как меня зовут?", listOf("бендер", "bender")) {
         override fun nextQuestion(): Question = PROFESSION
         override fun validate(answer: String): Boolean = answer.trim().firstOrNull()?.isUpperCase() ?: false

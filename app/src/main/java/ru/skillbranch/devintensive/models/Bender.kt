@@ -15,7 +15,7 @@ class Bender (var status: Status = Status.NORMAL, var question: Question = Quest
     }
 
     private fun checkAnswer(answer: String): String {
-        return if (question.answer.contains(answer)) {
+        return if (question.answers.contains(answer)) {
             question = question.nextQuestion()
             "Отлично - ты справился"
         }
