@@ -10,10 +10,10 @@ enum class Question(val question: String, val answer: List<String>) {
         override fun validate(answer: String): Boolean = answer.trim().firstOrNull()?.isLowerCase() ?: false
     },
     MATERIAL("Из чего я сделан?", listOf("металл", "дерево", "iron", "wood", "metal")) {
-        override fun nextQuestion(): Question = BDAY
+        override fun nextQuestion(): Question = BIRTHDAY
         override fun validate(answer: String): Boolean = answer.trim().contains(Regex("\\d")).not()
     },
-    BDAY("Когда меня создали?", listOf("2993")) {
+    BIRTHDAY("Когда меня создали?", listOf("2993")) {
         override fun nextQuestion(): Question = SERIAL
         override fun validate(answer: String): Boolean = answer.trim().contains(Regex("^[0-9]*$"))
     },

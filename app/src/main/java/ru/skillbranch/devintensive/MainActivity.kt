@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -69,7 +68,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             Question.NAME -> "Имя должно начинаться с заглавной буквы"
             Question.PROFESSION -> "Профессия должна начинаться со строчной буквы"
             Question.MATERIAL -> "Материал не должен содержать цифр"
-            Question.BDAY -> "Год моего рождения должен содержать только цифры"
+            Question.BIRTHDAY -> "Год моего рождения должен содержать только цифры"
             Question.SERIAL -> "Серийный номер содержит только цифры, и их 7"
             else -> "На этом все, вопросов больше нет"
         }
