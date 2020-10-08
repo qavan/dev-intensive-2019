@@ -1,7 +1,7 @@
-package ru.qavan.bender.models
+package com.qavan.bender.models
 
-import ru.qavan.bender.enum.Question
-import ru.qavan.bender.enum.Status
+import com.qavan.bender.enum.Question
+import com.qavan.bender.enum.Status
 
 class Bender (var status: Status = Status.NORMAL, var question: Question = Question.NAME) {
 

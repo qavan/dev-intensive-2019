@@ -1,12 +1,12 @@
-package ru.qavan.bender
+package com.qavan.bender
 
 import android.annotation.SuppressLint
 import android.graphics.PorterDuff
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
-import ru.qavan.bender.models.Bender
-import ru.qavan.bender.enum.Question
+import com.qavan.bender.models.Bender
+import com.qavan.bender.enum.Question
 import java.util.*
 
 

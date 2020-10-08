@@ -1,6 +1,6 @@
-package ru.qavan.bender.enum
+package com.qavan.bender.enum
 
-import ru.qavan.bender.R
+import com.qavan.bender.R
 
 enum class Status(val color: Int){
     NORMAL(R.color.color_white),
