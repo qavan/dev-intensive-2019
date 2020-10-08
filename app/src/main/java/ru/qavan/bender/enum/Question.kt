@@ -1,4 +1,4 @@
-package ru.skillbranch.devintensive.enum
+package ru.qavan.bender.enum
 
 enum class Question(val question: String, val answers: List<String>) {
     NAME("Как меня зовут?", listOf("бендер", "bender")) {

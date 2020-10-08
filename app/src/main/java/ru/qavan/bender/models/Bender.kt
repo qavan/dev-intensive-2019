@@ -1,7 +1,7 @@
-package ru.skillbranch.devintensive.models
+package ru.qavan.bender.models
 
-import ru.skillbranch.devintensive.enum.Question
-import ru.skillbranch.devintensive.enum.Status
+import ru.qavan.bender.enum.Question
+import ru.qavan.bender.enum.Status
 
 class Bender (var status: Status = Status.NORMAL, var question: Question = Question.NAME) {
 
