@@ -18,48 +18,24 @@ import ru.skillbranch.devintensive.enum.Status
 import java.util.*
 
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
-    lateinit var benderImage: ImageView
-    lateinit var textTxt: TextView
-    lateinit var messageEt: EditText
-    lateinit var sendBtn: ImageView
+class MainActivity : AppCompatActivity() {
 
-    lateinit var benderObj: Bender
+    private var benderObj: Bender = Bender()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        benderImage = iv_bender
-        textTxt = tv_text
-        messageEt = et_message
-        sendBtn = iv_send
+        iv_bender.setColorFilter(resources.getColor(benderObj.status.color), PorterDuff.Mode.MULTIPLY)
 
-        makeSendOnActionDone(messageEt)
-        val status = savedInstanceState?.getString("STATUS") ?: Status.NORMAL.name
-        val question = savedInstanceState?.getString("QUESTION") ?: Question.NAME.name
-        benderObj = Bender(Status.valueOf(status), Question.valueOf(question))
+        tv_text.text = benderObj.askQuestion()
 
-        val (r, g, b) = benderObj.status.color
-        benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
-
-        textTxt.text = benderObj.askQuestion()
-        sendBtn.setOnClickListener(this)
-    }
-
-    private fun makeSendOnActionDone(editText: EditText) {
-        editText.setRawInputType(InputType.TYPE_CLASS_TEXT)
-        editText.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) sendBtn.performClick()
-            false
-        }
-    }
-
-    override fun onClick(v: View?) {
-        if (v?.id == R.id.iv_send)
+        iv_send.setOnClickListener {
             if (isAnswerValid())
                 sendAnswer()
-            else makeErrorMessage()
+            else
+                makeErrorMessage()
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -72,20 +48,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             Question.SERIAL -> "Серийный номер содержит только цифры, и их 7"
             else -> "На этом все, вопросов больше нет"
         }
-        textTxt.text = "$errorMessage ${benderObj.question.question}"
-        messageEt.setText("")
+        tv_text.text = "$errorMessage ${benderObj.question.question}"
+        et_message.setText("")
     }
 
     private fun isAnswerValid(): Boolean {
-        return benderObj.question.validate(messageEt.text.toString())
+        return benderObj.question.validate(et_message.text.toString())
     }
 
     private fun sendAnswer() {
-        val (phase, color) = benderObj.listenAnswer(messageEt.text.toString().toLowerCase(Locale("ru")))
-        messageEt.setText("")
-        val (r, g, b) = color
-        benderImage.setColorFilter(Color.rgb(r, g, b), PorterDuff.Mode.MULTIPLY)
-        textTxt.text = phase
+        val (phase, color) = benderObj.listenAnswer(et_message.text.toString().toLowerCase(Locale("ru")))
+        et_message.setText("")
+        iv_bender.setColorFilter(resources.getColor(color), PorterDuff.Mode.MULTIPLY)
+        tv_text.text = phase
     }
 
 }

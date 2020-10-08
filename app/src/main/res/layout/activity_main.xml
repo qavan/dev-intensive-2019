@@ -9,25 +9,26 @@
     android:orientation="vertical"
     android:gravity="center">
 
+    <ImageView
+        android:id="@+id/iv_bender"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scaleType="fitCenter"
+        android:src="@drawable/bender_dance"
+        tools:ignore="ContentDescription" />
+
     <TextView
         android:id="@+id/tv_text"
         android:layout_width="wrap_content"
         android:layout_height="100dp"
-        android:text="Hello World!"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:textSize="@dimen/font_large_24" />
-
-    <ImageView
-        android:id="@+id/iv_bender"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:src="@drawable/bender_dance"
-        android:layout_weight="1"
-        tools:ignore="ContentDescription" />
+        android:textSize="@dimen/font_large_24"
+        tools:text="Hello World!" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,7 +44,7 @@
             android:layout_weight="1"
             android:textColor="@color/color_gray_light"
             android:textColorHint="@color/color_gray_light"
-            android:hint="Введите текст"
+            android:hint="Введите ответ"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:paddingTop="@dimen/spacing_normal_16"

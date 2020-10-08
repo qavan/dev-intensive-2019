@@ -7,7 +7,7 @@ class Bender (var status: Status = Status.NORMAL, var question: Question = Quest
 
     fun askQuestion():String = question.question
 
-    fun listenAnswer(answer:String):Pair<String, Triple<Int, Int, Int>>{
+    fun listenAnswer(answer:String):Pair<String, Int>{
         return when(question){
             Question.IDLE -> question.question to status.color
             else -> "${checkAnswer(answer)}\n${question.question}" to status.color
