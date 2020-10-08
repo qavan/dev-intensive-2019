@@ -2,13 +2,13 @@ package com.qavan.bender.enum
 
 import com.qavan.bender.R
 
-enum class Status(val color: Int){
+enum class Status(val color: Int) {
     NORMAL(R.color.color_white),
     WARNING(R.color.color_yellow),
     DANGER(R.color.color_orange),
     CRITICAL(R.color.color_red);
 
-    fun nextStatus(): Status{
+    fun nextStatus(): Status {
         return if (this.ordinal < values().lastIndex)
             values()[this.ordinal + 1]
         else values()[0]
